@@ -1,0 +1,24 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* grid-auto-rows: minmax(100px, 1fr); */
+    grid-gap: 1rem;
+    align-items: center;
+    justify-items: center;
+}
+
+.container > div {
+    background: lightblue;
+    padding: 1em;
+    border: 1px solid black;
+}
+.container > div::before {
+    padding-bottom: 100%;
+    display: block;
+}
