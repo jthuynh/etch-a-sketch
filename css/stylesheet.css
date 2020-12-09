@@ -15,8 +15,8 @@
 }
 
 .grid-container > div {
-    background: lightblue;
-    border: 1px solid black;
+    background: hsl(0, 0%, 100%);
+    border: 1px solid #D3D3D3;
 }
 .grid-container > div::before {
     padding-bottom: 100%;
