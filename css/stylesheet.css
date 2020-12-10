@@ -15,7 +15,7 @@
 }
 
 .grid-container > div {
-    background: hsl(0, 0%, 100%);
+    background-color: rgb(255,255,255);
     border: 1px solid #D3D3D3;
 }
 .grid-container > div::before {

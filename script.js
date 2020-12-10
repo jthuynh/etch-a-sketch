@@ -1,5 +1,3 @@
-// create 16x16 grid of square divs
-// use another container div
 const container = document.querySelector(".grid-container");
 
 // set up hover effect when mouse enters a div 
@@ -8,15 +6,40 @@ const container = document.querySelector(".grid-container");
 // for each div
 // get id of the box and add mouseenter event; mouseleave event;
 
-function mouseEnters(e) {
-    // console.log(this);
-    // this.style.setProperty('background-color', 'hsl(0,0%,0%)');
-    let color = e.target.style.backgroundColor;
-    console.log(typeof(color));
+function calcNewBackground(rgb) {
+    let newRGB = [];
+
+    for (let i = 0; i < rgb.length; i++) {
+        if (Number(rgb[i]) != 0) {
+            newRGB.push(Number(rgb[i]) - 25.5);
+        } else {
+            newRGB.push(0);
+        }
+    }
+
+    return newRGB;
 }
 
-function mouseLeaves(e) {
 
+function mouseEnters(e) {
+    let color = window.getComputedStyle(e.target).getPropertyValue("background-color");
+
+    // Add hovering transition
+    // e.target.classList.add('hover');
+
+    // TODO: Rainbow
+
+    // Grayscale
+    let parsedRGB = color.match(/\d+/g); 
+    let newRGB = calcNewBackground(parsedRGB);
+    this.style.setProperty('background-color',`rgb(${newRGB[0]},${newRGB[1]},${newRGB[2]})`);
+}
+
+
+function mouseLeaves(e) {
+    // Add end hovering transition
+    // if (e.propertyName !== 'transform') return;
+    //e.target.classList.remove('hover');
 }
 
 function setupEvents() {
@@ -27,7 +50,6 @@ function setupEvents() {
     divs.forEach(div => div.addEventListener('mouseleave', mouseLeaves));
 }
 
-// add new class to div to change color
 function createGrid(gridNumber) {
     document.getElementById("grid-container").style.setProperty('grid-template-columns', `repeat(${gridNumber}, 1fr)`);
     document.getElementById("grid-container").style.setProperty('grid-template-rows', `repeat(${gridNumber}, 1fr)`);
