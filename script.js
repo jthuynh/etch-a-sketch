@@ -20,26 +20,28 @@ function calcNewBackground(rgb) {
     return newRGB;
 }
 
-
 function mouseEnters(e) {
     let color = window.getComputedStyle(e.target).getPropertyValue("background-color");
 
     // Add hovering transition
-    // e.target.classList.add('hover');
+    e.target.classList.add('hover');
 
     // TODO: Rainbow
+    this.style.setProperty('background-color', "#"+((1<<24)*Math.random()|0).toString(16));
 
-    // Grayscale
-    let parsedRGB = color.match(/\d+/g); 
-    let newRGB = calcNewBackground(parsedRGB);
-    this.style.setProperty('background-color',`rgb(${newRGB[0]},${newRGB[1]},${newRGB[2]})`);
+    // // Grayscale
+    // let parsedRGB = color.match(/\d+/g); 
+    // let newRGB = calcNewBackground(parsedRGB);
+    // this.style.setProperty('background-color',`rgb(${newRGB[0]},${newRGB[1]},${newRGB[2]})`);
+
+    // // Black
+    // this.style.setProperty('background-color', 'rgb(0,0,0)');
 }
 
 
 function mouseLeaves(e) {
-    // Add end hovering transition
-    // if (e.propertyName !== 'transform') return;
-    //e.target.classList.remove('hover');
+    if (e.propertyName !== 'transform') return;
+    e.target.classList.remove('hover');
 }
 
 function setupEvents() {
@@ -66,5 +68,4 @@ function startGame(gridNumber) {
     setupEvents();
 }
 
-
-startGame(25);
+startGame(16);
