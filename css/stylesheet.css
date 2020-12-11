@@ -2,8 +2,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 720px;
-    width: 720px;
+    height: 100vh;
 }
  
 .grid-container {
