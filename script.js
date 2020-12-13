@@ -11,8 +11,12 @@ function calcNewBackground(rgb) {
             newRGB.push(0);
         }
     }
-
-    return newRGB;
+    
+    if (newRGB.every( (val, i, arr) => val === arr[0] )) {
+        return newRGB;
+    } else {
+        return calcNewBackground([255,255,255]);
+    }
 }
 
 function mouseEnters(e) {
@@ -26,6 +30,11 @@ function mouseEnters(e) {
             break;
 
         case 'grayscale':
+            // Clear grid-tile that was already black
+            if (color == 'rgb(0, 0, 0)') {
+                color = 'rgb(255,255,255)';
+            }
+
             let parsedRGB = color.match(/\d+/g); 
             let newRGB = calcNewBackground(parsedRGB);
             this.style.setProperty('background-color',`rgb(${newRGB[0]},${newRGB[1]},${newRGB[2]})`);
@@ -81,3 +90,30 @@ function startGame(gridNumber) {
 }
 
 startGame(16);
+
+//   TODO: Clear the grid when scrolling with the slider
+//  Fix the code so it only includes 1 range 
+
+// From Css tricks : https://css-tricks.com/value-bubbles-for-range-inputs/
+const allRanges = document.querySelectorAll(".range-wrap");
+allRanges.forEach(wrap => {
+  const range = wrap.querySelector(".range");
+  const bubble = wrap.querySelector(".bubble");
+
+  range.addEventListener("input", () => {
+    setBubble(range, bubble);
+  });
+  setBubble(range, bubble);
+  
+});
+
+function setBubble(range, bubble) {
+  const val = range.value;
+  const min = range.min ? range.min : 0;
+  const max = range.max ? range.max : 100;
+  const newVal = Number(((val - min) * 100) / (max - min));
+  bubble.innerHTML = val;
+
+  // Sorta magic numbers based on size of the native UI thumb
+  bubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.15}px))`;
+}
