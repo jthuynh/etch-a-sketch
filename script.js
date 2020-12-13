@@ -1,11 +1,5 @@
 const container = document.querySelector(".grid-container");
 
-// set up hover effect when mouse enters a div 
-// and ends when mouse leaves it
-// set up event listeners for either of those
-// for each div
-// get id of the box and add mouseenter event; mouseleave event;
-
 function calcNewBackground(rgb) {
     let newRGB = [];
 
