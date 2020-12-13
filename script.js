@@ -1,4 +1,5 @@
 const container = document.querySelector(".grid-container");
+let curColor = "black";
 
 function calcNewBackground(rgb) {
     let newRGB = [];
@@ -17,19 +18,26 @@ function calcNewBackground(rgb) {
 function mouseEnters(e) {
     let color = window.getComputedStyle(e.target).getPropertyValue("background-color");
 
-    // Add hovering transition
     e.target.classList.add('hover');
 
-    // TODO: Rainbow
-    this.style.setProperty('background-color', "#"+((1<<24)*Math.random()|0).toString(16));
+    switch (curColor) {
+        case 'rainbow':
+            this.style.setProperty('background-color', "#"+((1<<24)*Math.random()|0).toString(16));
+            break;
 
-    // // Grayscale
-    // let parsedRGB = color.match(/\d+/g); 
-    // let newRGB = calcNewBackground(parsedRGB);
-    // this.style.setProperty('background-color',`rgb(${newRGB[0]},${newRGB[1]},${newRGB[2]})`);
+        case 'grayscale':
+            let parsedRGB = color.match(/\d+/g); 
+            let newRGB = calcNewBackground(parsedRGB);
+            this.style.setProperty('background-color',`rgb(${newRGB[0]},${newRGB[1]},${newRGB[2]})`);
+            break;
 
-    // // Black
-    // this.style.setProperty('background-color', 'rgb(0,0,0)');
+        case 'eraser':
+            this.style.setProperty('background-color', 'rgb(255,255,255');
+            break;
+
+        default:
+            this.style.setProperty('background-color', 'rgb(0,0,0)');
+    }
 }
 
 
@@ -38,12 +46,22 @@ function mouseLeaves(e) {
     e.target.classList.remove('hover');
 }
 
+function clickFunc(e) {
+    console.log(e.target.id);
+    curColor = e.target.id;
+}
+
 function setupEvents() {
     const divs = document.getElementById("grid-container").childNodes;
-    console.log(divs);
+    const buttons = document.querySelector(".controls").children;
 
     divs.forEach(div => div.addEventListener('mouseenter', mouseEnters));
     divs.forEach(div => div.addEventListener('mouseleave', mouseLeaves));
+
+    for (const button of buttons) {
+        button.addEventListener('click', clickFunc);
+    }
+
 }
 
 function createGrid(gridNumber) {
