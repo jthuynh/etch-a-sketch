@@ -17,16 +17,18 @@
             <button class="grayscale" id="grayscale" type="button">Grayscale</button>
             <button class="eraser" id="eraser" type="button">Eraser</button>
         </div>
+
+        <div class="range-wrap">
+            <p>Grid size</p>
+            <input type="range" class="range" min="16" max="100" value="25">
+            <output class="bubble"></output>
+        </div>
+
         <div class="wrapper">
             <div class="grid-container" id="grid-container"></div>
         </div>
 
-        <div class="slider-wrap">
-            <div class="range-wrap">
-                <input type="range" class="range">
-                <output class="bubble"></output>
-            </div>
-        </div>
+        
         
         <script src="script.js"></script>
     </body>

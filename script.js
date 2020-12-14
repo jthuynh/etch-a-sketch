@@ -1,4 +1,6 @@
 const container = document.querySelector(".grid-container");
+const range = document.querySelector(".range");
+const bubble = document.querySelector(".bubble");
 let curColor = "black";
 
 function calcNewBackground(rgb) {
@@ -61,59 +63,73 @@ function clickFunc(e) {
 }
 
 function setupEvents() {
-    const divs = document.getElementById("grid-container").childNodes;
     const buttons = document.querySelector(".controls").children;
-
-    divs.forEach(div => div.addEventListener('mouseenter', mouseEnters));
-    divs.forEach(div => div.addEventListener('mouseleave', mouseLeaves));
 
     for (const button of buttons) {
         button.addEventListener('click', clickFunc);
     }
 
+    range.addEventListener("input", () => {
+        setBubble(range, bubble);
+    });
+
+}
+
+function addDivs(numDivs) {
+    for(x = 0; x < numDivs; x++) {
+        var div = document.createElement('div');
+        div.addEventListener('mouseenter', mouseEnters);
+        div.addEventListener('mouseleave', mouseLeaves);
+        container.appendChild(div);
+    }
+}
+
+function removeDivs(numDivs) {
+    console.log(numDivs);
+    for(x = 0; x < numDivs; x++) {
+        container.removeChild(container.firstChild);
+    }
 }
 
 function createGrid(gridNumber) {
-    document.getElementById("grid-container").style.setProperty('grid-template-columns', `repeat(${gridNumber}, 1fr)`);
-    document.getElementById("grid-container").style.setProperty('grid-template-rows', `repeat(${gridNumber}, 1fr)`);
+    container.style.setProperty('grid-template-columns', `repeat(${gridNumber}, 1fr)`);
+    container.style.setProperty('grid-template-rows', `repeat(${gridNumber}, 1fr)`);
 
-    for(x = 0; x < gridNumber * gridNumber; x++) {
-        var div = document.createElement('div');
+    addDivs(gridNumber * gridNumber);
+    // for(x = 0; x < gridNumber * gridNumber; x++) {
+    //     var div = document.createElement('div');
         
-        document.getElementById('grid-container').appendChild(div);
-    }
+    //     document.getElementById('grid-container').appendChild(div);
+    // }
 }
 
 function startGame(gridNumber) {
     createGrid(gridNumber);
     setupEvents();
+    setBubble(range, bubble);
 }
 
-startGame(16);
-
-//   TODO: Clear the grid when scrolling with the slider
-//  Fix the code so it only includes 1 range 
+startGame(25);
 
 // From Css tricks : https://css-tricks.com/value-bubbles-for-range-inputs/
-const allRanges = document.querySelectorAll(".range-wrap");
-allRanges.forEach(wrap => {
-  const range = wrap.querySelector(".range");
-  const bubble = wrap.querySelector(".bubble");
-
-  range.addEventListener("input", () => {
-    setBubble(range, bubble);
-  });
-  setBubble(range, bubble);
-  
-});
-
 function setBubble(range, bubble) {
-  const val = range.value;
-  const min = range.min ? range.min : 0;
-  const max = range.max ? range.max : 100;
-  const newVal = Number(((val - min) * 100) / (max - min));
-  bubble.innerHTML = val;
+    const val = range.value;
+    const min = range.min ? range.min : 0;
+    const max = range.max ? range.max : 100;
+    const newVal = Number(((val - min) * 100) / (max - min));
+    bubble.innerHTML = val;
 
-  // Sorta magic numbers based on size of the native UI thumb
-  bubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.15}px))`;
+    let numDivs = (val * val) - container.childElementCount;
+
+    if (numDivs > 0) {
+        addDivs(numDivs);
+    } else {
+        removeDivs(-numDivs);   
+    }
+    container.style.setProperty('grid-template-columns', `repeat(${val}, 1fr)`);
+    container.style.setProperty('grid-template-rows', `repeat(${val}, 1fr)`);
+    container.childNodes.forEach(div => div.style.setProperty('background-color', 'rgb(255,255,255)'));
+
+    // Sorta magic numbers based on size of the native UI thumb
+    bubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.15}px))`;
 }
